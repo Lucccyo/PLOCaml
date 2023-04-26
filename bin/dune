@@ -1,0 +1,9 @@
+(executable
+ (public_name plocaml)
+ (name main)
+ (libraries plocaml)
+ (preprocess (pps ppx_deriving.show)))
+
+(menhir (modules parser)
+ (flags --explain))
+(ocamllex lexer)
