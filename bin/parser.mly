@@ -25,10 +25,10 @@ expr:
   ;
 
 op:
-  | PLUS { fun l -> Plus l }
+  | PLUS  { fun l -> Plus l }
   | MINUS { fun l -> Minus l }
-  | MUL { fun l -> Mul l }
-  | DIV { fun l -> Div l }
+  | MUL   { fun l -> Mul l }
+  | DIV   { fun l -> Div l }
 
 exprs:
   |             {[]}

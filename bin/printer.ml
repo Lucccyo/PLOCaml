@@ -1,6 +1,6 @@
 (* open Ast *)
 
-(* let line = ref 1 *)
+let indent = ref 1
 (*
 let rec pp_value ppf ast =
   match ast with
@@ -25,26 +25,26 @@ let rec pp_value ppf ast =
   pp_value fmt v;
   Format.fprintf fmt " ; ";
   pp_values fmt tl *)
-(* 
-let rec print_ast ppf ast =
+
+(* let rec print_ast ppf ast =
   match ast with
   | Number n -> Format.fprintf ppf "%d" n
-  | Plus vl  -> 
+  | Plus vl  ->  *)
 
-and pp_values fmt = function
+(* and pp_values fmt = function
 | [] -> ()
 | [v] -> pp_value fmt v
 | v :: tl ->
   pp_value fmt v;
   Format.fprintf fmt " ; ";
-  pp_values fmt tl
+  pp_values fmt tl *)
 
 let print () =
   let fd = open_out "res.ml" in
-  Printf.fprintf fd ""
+  (* Printf.fprintf fd "" *)
 
   Printf.fprintf fd "%s\n" "let () =";
   (* Printf.fprintf fd " %a \n" print_ast ast; *)
-  (* Printf.fprintf fd "\t%s\n" "Format.printf \"%d\"(f ());"; *)
+  Printf.fprintf fd "\t%s\n" "Format.printf \"%d\"(f ());";
   Printf.fprintf fd "\t%s\n" "()";
-  close_out fd; *)
+  close_out fd;
