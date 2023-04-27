@@ -3,6 +3,9 @@
 %}
 
 %token PLUS
+%token MINUS
+%token MUL
+%token DIV
 %token LBRACKET, RBRACKET
 %token<int> NUMBER
 %token EOF
@@ -18,10 +21,15 @@ main:
 
 expr:
   | NUMBER {Number $1}
-  | LBRACKET PLUS exprs RBRACKET {Plus $3}
+  | LBRACKET op exprs RBRACKET { $2 $3 }
   ;
+
+op:
+  | PLUS { fun l -> Plus l }
+  | MINUS { fun l -> Minus l }
+  | MUL { fun l -> Mul l }
+  | DIV { fun l -> Div l }
 
 exprs:
   |             {[]}
-  // | expr        {$1}
   | expr exprs  {$1 :: $2}
