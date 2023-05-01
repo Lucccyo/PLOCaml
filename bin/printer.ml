@@ -1,50 +1,30 @@
-(* open Ast *)
+open Ast
 
-let indent = ref 1
-(*
-let rec pp_value ppf ast =
-  match ast with
-  | Number n    -> Format.fprintf ppf "Int [%d]" n
-  (* | Bool _b   -> Format.fprintf ppf "a" *)
-  (* | String s -> Format.fprintf ppf "String [%S]" s *)
-  (* | Relop (r, v1, v2) ->
-    Format.fprintf ppf "Relop [%a %a %a]" pp_value v1 pp_relop r.pelem pp_value v2 *)
-  (* | Logop (l, v1, v2) ->
-    Format.fprintf ppf "(%a %a %a)" pp_value v1 pp_logop l.pelem pp_value v2 *)
-  (* | Pfxop (p, v) ->
-    Format.fprintf ppf "Pfxop [%a %a]" pp_pfxop p.pelem pp_value v *)
-  | Plus (ast, ast_lst) -> Format.fprintf ppf "List [\t%a]"
-  | List {pelem = l; _} -> Format.fprintf ppf "List [\t%a]" pp_values l
-  (* | Group {pelem = l; _} -> Format.fprintf ppf "Group [\t%a]" pp_values l *)
-  | _ -> assert false *)
-
-(* and pp_values fmt = function
-| [] -> ()
-| [v] -> pp_value fmt v
-| v :: tl ->
-  pp_value fmt v;
-  Format.fprintf fmt " ; ";
-  pp_values fmt tl *)
-
-(* let rec print_ast ppf ast =
+let rec pp_ast ppf ast =
   match ast with
   | Number n -> Format.fprintf ppf "%d" n
-  | Plus vl  ->  *)
+  | Plus l   -> Format.fprintf ppf "%a" (pp_list ~sep:"+") l
+  | Minus l  -> Format.fprintf ppf "%a" (pp_list ~sep:"-") l
+  | Mul l    -> Format.fprintf ppf "%a" (pp_list ~sep:"*") l
+  | Div l    -> Format.fprintf ppf "%a" (pp_list ~sep:"/") l
+  | Brackets _   -> Format.fprintf ppf " () "
 
-(* and pp_values fmt = function
-| [] -> ()
-| [v] -> pp_value fmt v
-| v :: tl ->
-  pp_value fmt v;
-  Format.fprintf fmt " ; ";
-  pp_values fmt tl *)
+and pp_list fmt ~sep = function
+  | [ ]     -> ()
+  | [v]     -> pp_ast fmt v
+  | v :: tl ->
+    pp_ast fmt v;
+    Format.fprintf fmt "%s" sep;
+    pp_list fmt ~sep:sep tl
 
-let print () =
+(* let indent = ref 1 *)
+
+let print ast =
   let fd = open_out "res.ml" in
-  (* Printf.fprintf fd "" *)
+  (* let fmt = Format.formatter_of_out_channel fd in *)
+  let fmt = Format.std_formatter in
 
-  Printf.fprintf fd "%s\n" "let () =";
-  (* Printf.fprintf fd " %a \n" print_ast ast; *)
-  Printf.fprintf fd "\t%s\n" "Format.printf \"%d\"(f ());";
-  Printf.fprintf fd "\t%s\n" "()";
+  Format.fprintf fmt "\n%s\n" "Format.printf \"%d\"(f ());";
+  Format.fprintf fmt "\t%a" pp_ast ast;
+  Format.fprintf fmt ";\n\t%s\n" "()";
   close_out fd;
