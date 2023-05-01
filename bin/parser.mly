@@ -6,17 +6,17 @@
 %token MINUS
 %token MUL
 %token DIV
+%token WRITE
 %token LBRACKET, RBRACKET
 %token<int> NUMBER
 %token EOF
 
-%start main
-%type<Ast.ast> main
+%start<Ast.ast> main
 
 %%
 
 main:
-  expr EOF {$1}
+  prefix EOF {$1}
   ;
 
 expr:
@@ -33,3 +33,7 @@ op:
 exprs:
   |             {[]}
   | expr exprs  {$1 :: $2}
+
+prefix:
+  | expr {$1}
+  | WRITE expr {Write $2}

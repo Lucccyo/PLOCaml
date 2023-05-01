@@ -1,8 +1,9 @@
 type ast =
   | Number of int
-  | Brackets of ast
+  (* | Brackets of ast *)
   | Plus of ast list
   | Minus of ast list
   | Mul of ast list
   | Div of ast list
+  | Write of ast
 [@@deriving show]
